@@ -37,15 +37,3 @@ Now you can run your server:
 `python manage.py runserver`
 
 
-### To Run the App
-
-Open your code editor and in terminal go to the folder where you copies the code and run the following commands:
-
-```
-python manage.py makemigrations
-python manage.py migrate
-```
-
-Now you can run your server:
-
-`python manage.py runserver`
