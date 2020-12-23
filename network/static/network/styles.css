@@ -1,0 +1,65 @@
+.wrapper {
+    border: 2px solid lightgray;
+    margin-top: 20px;
+}
+
+.project-name {
+    color: darkgray;
+    font-size: 30px;
+}
+
+.project-name:hover {
+    color: rgb(59, 59, 59);
+    text-decoration: none;
+}
+
+.new-post, .all-posts {
+    padding: 10px;
+}
+
+.posts {
+    margin-bottom: 7px;
+}
+
+.navbar {
+    box-shadow: 0px 0px 10px gray !important;  
+}
+
+.navigation {
+    display: flex;
+}
+
+.nav-item {
+    list-style: none;
+    margin-right: 2rem;
+}
+
+.nav-item a {
+    text-decoration: none;
+    color: gray;
+}
+
+.nav-item a:hover,
+.nav-link.active {
+    color: darkblue !important;
+    font-weight: bold;
+}
+
+button.edit-btn, .new-post-btn, form.post-changes-btn {
+    background-color: lightgray;
+}
+
+button.edit-btn:hover, .new-post-btn:hover {
+    background-color: gray;   
+    color: white;
+}
+
+.author-name {
+    color: darkblue !important;
+    text-decoration: none !important;
+}
+
+.author-name:hover {
+    font-weight: bold;
+    color: gray !important;
+}

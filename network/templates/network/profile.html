@@ -1,0 +1,92 @@
+{% extends "network/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+    <div class="card" style="margin-top: 20px;">
+        <div class="card-header">
+            <h5 class="card-title">
+                {% if user.is_authenticated and user == username %}
+                    <h2>Your profile:</h2>
+                {% else %}
+                    <div>
+                        <h2>{{ username.first_name | title }} {{ username.last_name | title }} profile:</h2>
+                        {% if user in username.followers.all %}
+                            <a href="{% url 'toggle_following' username.username %}" role="button" class="btn watching">Unfollow</a>
+                        {% else %}
+                            <a href="{% url 'toggle_following' username.username %}" role="button" class="btn watching">Follow</a>
+                        {% endif %}
+                    </div>
+                {% endif %}            
+            </h5>
+        </div>
+        <div class="card-body">
+            <p class="card-text"><small class="text-muted">
+                <p>{{username.email }}</p>
+                <p>
+                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                    Joined: {{ username.created }}
+                </p>
+                <div>
+                    <p>
+                        <b>{{ username.followers.all | length }}</b> Followers
+                        <b>{{ username.following.all | length }}</b> Following
+                    </p>
+                </div>        
+            </small></p>
+        </div>
+        <div class="card-footer">
+            {% if user.is_authenticated %}
+                {% if posts %}
+                    {% for post in posts %}
+                        <div class="posts">
+                            <div class="card">
+                                <div class="card-body">
+                                <p class="card-text" id="post-content-{{ post.id }}">{{ post.post }}</p>
+                                <p class="card-text"><small><i>created at </i></small> {{ post.created }}</p>
+                                <p class="card-text">
+                                    <svg viewBox="0 0 300 300" 
+                                        width="2em" 
+                                        height="2em"
+                                        xmlns="http://www.w3.org/2000/svg" 
+                                        id = {{ post.id }}
+                                        data-like={{ post.id }}
+                                        class="star"
+                                        fill="
+                                            {% if user in post.likes.all %}
+                                            red
+                                            {% else %}
+                                            black 
+                                            {% endif %}">
+                                        <polygon points="100,10 40,198 190,78 10,78 160,198"/>
+                                    </svg>
+                                    <span id="like-count-{{ post.id }}">{{ post.likes.all|length }}</span>
+                                </p>
+                                {% if user.is_authenticated and user == post.creator %}
+                                    <button type="button" class="btn edit-btn" data-post="{{ post.id }}" id="edit-btn-{{ post.id }}">Edit</button>
+                                    <div class="edit-form" id="edit-form-{{ post.id }}">
+                                        
+                                            <textarea class="form-control edit-textarea" id="edit-textarea-{{ post.id }}" data-post="{{ post.id }}">{{ post.post }}</textarea>
+                                            <button class="btn btn-primary btn-sm my-1 edit-save-btn" id="save-btn-{{post.id}}" data-post="{{ post.id }}">Save</button>
+                                        
+                                    </div>                
+                                {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>You did not create any posts yet, please add one...</p>
+                {% endif %}
+        
+            {% endif %}
+        </div>
+        
+    </div>
+{% endblock %}
+
+{% block script %}
+    {% if user.is_authenticated %}
+        <script src="{% static 'network/index.js' %}"></script>
+    {% endif %}
+{% endblock %}

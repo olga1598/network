@@ -1,0 +1,52 @@
+{% extends "network/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+    <h1>All the posts which authors you follow:</h1>
+    {% if user.is_authenticated %}
+        {% for post in posts %}
+            <div class="posts">
+                <div class="card">
+                    <a href="{% url 'profile' post.creator %}" class="author-name">
+                        <h5 class="card-header">{{ post.creator| upper }}</h5>
+                    </a>
+                    <div class="card-body">
+                    <p class="card-text">{{ post.post }}</p>
+                    <p class="card-text"><small><i>created at </i></small> {{ post.created }}</p>
+                    <p class="card-text">
+                        <svg viewBox="0 0 300 300" 
+                            width="2em" 
+                            height="2em"
+                            xmlns="http://www.w3.org/2000/svg" 
+                            id = {{ post.id }}
+                            data-like={{ post.id }}
+                            class="star"
+                            fill="
+                                {% if user in post.likes.all %}
+                                red
+                                {% else %}
+                                black 
+                                {% endif %}">
+                            <polygon points="100,10 40,198 190,78 10,78 160,198"/>
+                        </svg>
+                        <span id="like-count-{{ post.id }}">{{ post.likes.all|length }}</span>
+                    </p>
+                    {% if user.is_authenticated and user == post.creator %}
+                        <form action="{% url 'edit' %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="edit_button" name="edit" value={{post.id}}>Edit Post</button>
+                        </form>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    {% if user.is_authenticated %}
+        <script src="{% static 'network/index.js' %}"></script>
+    {% endif %}
+{% endblock %}

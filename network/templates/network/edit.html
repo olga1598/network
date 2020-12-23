@@ -1,0 +1,33 @@
+{% extends "network/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+    <div class="entry" style="margin: 15px;">
+        <h1 class="page_title">Edit the content of your post</h1>
+
+        <h6><i>you can change/add the content below...</i></h6>
+        
+        {% if user.is_authenticated and user == post.user_id%}
+        <form action="{% url 'save' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <textarea class="form-control" id="body-post" name="post-content" style="min-height: 100px;">{{ post.post }}</textarea>
+            </div>
+            <div class="form-group">
+                <!-- <input type="submit" value="Post"> -->
+                <button type="submit" name="save" class="post-changes-btn" id="save_changes" value={{post.id}}>Save changes</button>
+            </div>
+
+        </form>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    {% if user.is_authenticated %}
+        <script src="{% static 'network/index.js' %}"></script>
+    {% endif %}
+{% endblock %}
+
